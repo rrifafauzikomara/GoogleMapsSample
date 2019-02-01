@@ -1,5 +1,5 @@
-# GoogleMapsSample
-Sample app using Google Maps to display current location (real time)
+# Google Maps V2 Sample
+Sample app using Google Maps V2 to display current location (real time)
 
 ## Screenshot
 <pre>
