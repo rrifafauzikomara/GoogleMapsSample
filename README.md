@@ -12,5 +12,5 @@ Sample app using Google Maps V2 to display current location (real time)
 </pre>
 
 ## Author
-R Rifa Fauzi Komara
+R Rifa Fauzi Komara<br>
 Jangan lupa untuk follow dan ★
