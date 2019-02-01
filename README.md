@@ -7,7 +7,7 @@ Sample app using API Google Maps V2
 <img src="Screenshot/Screenshot_1.jpg" width="250" height="500">
 </pre>
 
-In this branch, only use API Google Maps for get current location (real time)
+In this branch, add API Google Maps for get current location (real time)
 
 ## Branch add_api_place_autocomplete
 ### Screenshot 2 
