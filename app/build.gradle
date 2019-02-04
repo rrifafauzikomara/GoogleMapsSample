@@ -26,7 +26,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //gmaps
-    implementation 'com.google.android.gms:play-services:11.8.0'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
 
     //for API place autocomplete
