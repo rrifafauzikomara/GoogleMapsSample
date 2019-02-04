@@ -1,5 +1,5 @@
 # Google Maps V2 Sample
-Sample app using API Google Maps V2
+Sample app who implement all API Google Maps V2
 
 ## Branch master
 ### Screenshot 1
