@@ -17,6 +17,14 @@ In this branch, add API Google Maps for get current location (real time)
 
 In this branch, add API Google Maps for Place Autocomplete
 
+## Branch add_api_place_search
+### Screenshot 3
+<pre>
+<img src="Screenshot/Screenshot_5.jpg" width="250" height="500">
+</pre>
+
+In this branch, add API Google Maps Place Search restaurant in Bandung with radius 1500 meters 
+
 ## Author
 
 * **R Rifa Fauzi Komara**
