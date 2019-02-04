@@ -1,10 +1,13 @@
 package id.eudeka.osg3.googlemapssample.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -196,11 +199,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getLocation() {
+//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        Criteria criteria = new Criteria();
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
+//            return;
+//        }
+//        mLastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 //        Double lng = mLastLocation.getLongitude();
 //        Double lat = mLastLocation.getLatitude();
 //        String slng = Double.toString(lng);
 //        String slat = Double.toString(lat);
-//        String location = slat + "," + slng;
+//        String location = slat + ","+ slng;
         String location = "-6.914744,107.609810";
         int radius = 1500;
         String type = "restaurant";
