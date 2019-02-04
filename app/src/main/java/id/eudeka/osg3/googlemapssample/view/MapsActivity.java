@@ -1,4 +1,4 @@
-package id.eudeka.osg3.googlemapssample;
+package id.eudeka.osg3.googlemapssample.view;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -7,11 +7,14 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -22,11 +25,21 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
+
+import id.eudeka.osg3.googlemapssample.R;
+import id.eudeka.osg3.googlemapssample.api.BaseApiService;
+import id.eudeka.osg3.googlemapssample.api.Server;
+import id.eudeka.osg3.googlemapssample.model.ResponsModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -36,6 +49,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
+    LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +63,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
+        // Memanggil fungsi getLocation untuk menampilkan lokasi restoran
+        getLocation();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
         //stop location updates when Activity is no longer active
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -102,7 +118,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 //move map camera
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude)).zoom(16).build();
                 mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
@@ -110,6 +126,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -130,7 +147,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(MapsActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
                         .create()
@@ -141,7 +158,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
@@ -176,6 +193,64 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         }
+    }
+
+    private void getLocation() {
+//        Double lng = mLastLocation.getLongitude();
+//        Double lat = mLastLocation.getLatitude();
+//        String slng = Double.toString(lng);
+//        String slat = Double.toString(lat);
+//        String location = slat + "," + slng;
+        String location = "-6.914744,107.609810";
+        int radius = 1500;
+        String type = "restaurant";
+        String keyword = "cruise";
+        String key = getResources().getString(R.string.google_maps_key);
+        BaseApiService apiService = Server.getUrl().create(BaseApiService.class);
+        Call<ResponsModel> getdata = apiService.getRestorant(location, radius, type, keyword, key);
+        getdata.enqueue(new Callback<ResponsModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponsModel> call, @NonNull Response<ResponsModel> response) {
+                if (response.isSuccessful()){
+                    try {
+                        mGoogleMap.clear();
+                        // This loop will go through all the results and add marker on each location.
+                        for (int i = 0; i < response.body().getResults().size(); i++) {
+                            double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
+                            double lng = response.body().getResults().get(i).getGeometry().getLocation().getLng();
+                            String placeName = response.body().getResults().get(i).getName();
+                            String vicinity = response.body().getResults().get(i).getVicinity();
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            latLng = new LatLng(lat, lng);
+                            // Position of Marker on Map
+                            markerOptions.position(latLng);
+                            // Adding Title to the Marker
+                            markerOptions.title(placeName + " : " + vicinity);
+                            // Adding Marker to the Camera.
+                            Marker m = mGoogleMap.addMarker(markerOptions);
+                            // Adding colour to the marker
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            // move map camera
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                        }
+                    } catch (Exception e) {
+                        Log.d("onResponse", "There is an error");
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Gagal Mengambil Data Restoran", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponsModel> call, @NonNull Throwable t) {
+                Log.e("onFailure : ","Message : "+String.valueOf(t.getMessage()));
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Gagal Menghubungkan Internet !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
