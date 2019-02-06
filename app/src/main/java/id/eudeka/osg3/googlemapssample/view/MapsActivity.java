@@ -1,13 +1,10 @@
 package id.eudeka.osg3.googlemapssample.view;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -206,8 +203,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            return;
 //        }
 //        mLastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-//        Double lng = mLastLocation.getLongitude();
-//        Double lat = mLastLocation.getLatitude();
+//        double lng = mLastLocation.getLongitude();
+//        double lat = mLastLocation.getLatitude();
 //        String slng = Double.toString(lng);
 //        String slat = Double.toString(lat);
 //        String location = slat + ","+ slng;
