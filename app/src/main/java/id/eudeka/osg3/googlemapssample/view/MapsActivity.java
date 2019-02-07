@@ -49,7 +49,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-    LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +117,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 //move map camera
-                latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude)).zoom(16).build();
                 mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
@@ -228,7 +227,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             String placeName = response.body().getResults().get(i).getName();
                             String vicinity = response.body().getResults().get(i).getVicinity();
                             MarkerOptions markerOptions = new MarkerOptions();
-                            latLng = new LatLng(lat, lng);
+                            LatLng latLng = new LatLng(lat, lng);
                             // Position of Marker on Map
                             markerOptions.position(latLng);
                             // Adding Title to the Marker

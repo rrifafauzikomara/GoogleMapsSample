@@ -8,5 +8,9 @@ import retrofit2.http.Query;
 public interface BaseApiService {
 
     @GET("maps/api/place/nearbysearch/json")
-    Call<ResponsModel> getRestorant(@Query("location") String location, @Query("radius") Integer radius, @Query("type") String type, @Query("keyword") String keyword, @Query("key") String key);
+    Call<ResponsModel> getRestorant(@Query("location") String location,
+                                    @Query("radius") Integer radius,
+                                    @Query("type") String type,
+                                    @Query("keyword") String keyword,
+                                    @Query("key") String key);
 }

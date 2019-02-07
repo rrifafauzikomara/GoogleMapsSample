@@ -27,7 +27,8 @@ public class Server {
         // start converter json
         Gson gson = new GsonBuilder().setLenient().create();
 
-        return new Retrofit.Builder().baseUrl(base_url).addConverterFactory(GsonConverterFactory.create(gson)).client(httpClient.build()).build();
+        return new Retrofit.Builder().baseUrl(base_url).addConverterFactory(GsonConverterFactory
+                .create(gson)).client(httpClient.build()).build();
     }
 
 }
