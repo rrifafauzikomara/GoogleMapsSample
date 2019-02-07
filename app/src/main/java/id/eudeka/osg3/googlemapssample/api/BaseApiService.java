@@ -11,6 +11,5 @@ public interface BaseApiService {
     Call<ResponsModel> getRestorant(@Query("location") String location,
                                     @Query("radius") Integer radius,
                                     @Query("type") String type,
-                                    @Query("keyword") String keyword,
                                     @Query("key") String key);
 }

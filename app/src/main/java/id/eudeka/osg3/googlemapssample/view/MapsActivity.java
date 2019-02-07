@@ -1,10 +1,15 @@
 package id.eudeka.osg3.googlemapssample.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -30,6 +35,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -195,25 +202,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getLocation() {
-//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        Criteria criteria = new Criteria();
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
-//            return;
-//        }
-//        mLastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-//        double lng = mLastLocation.getLongitude();
-//        double lat = mLastLocation.getLatitude();
-//        String slng = Double.toString(lng);
-//        String slat = Double.toString(lat);
-//        String location = slat + ","+ slng;
-        String location = "-6.914744,107.609810";
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
+            return;
+        }
+        mLastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        double lng = mLastLocation.getLongitude();
+        double lat = mLastLocation.getLatitude();
+        String slng = Double.toString(lng);
+        String slat = Double.toString(lat);
+        String location = slat + ","+ slng;
         int radius = 1500;
         String type = "restaurant";
-        String keyword = "cruise";
         String key = getResources().getString(R.string.google_maps_key);
         BaseApiService apiService = Server.getUrl().create(BaseApiService.class);
-        Call<ResponsModel> getdata = apiService.getRestorant(location, radius, type, keyword, key);
+        Call<ResponsModel> getdata = apiService.getRestorant(location, radius, type, key);
         getdata.enqueue(new Callback<ResponsModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponsModel> call, @NonNull Response<ResponsModel> response) {
@@ -232,10 +237,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             markerOptions.position(latLng);
                             // Adding Title to the Marker
                             markerOptions.title(placeName + " : " + vicinity);
-                            // Adding Marker to the Camera.
-                            Marker m = mGoogleMap.addMarker(markerOptions);
                             // Adding colour to the marker
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            // Adding Marker to the Camera.
+                            Marker m = mGoogleMap.addMarker(markerOptions);
                             // move map camera
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                             mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
