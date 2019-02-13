@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -35,8 +33,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -204,7 +200,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
             return;
         }
@@ -216,7 +214,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String location = slat + ","+ slng;
         int radius = 1500;
         String type = "restaurant";
-        String key = getResources().getString(R.string.google_maps_key);
+        final String key = getResources().getString(R.string.google_maps_key);
         BaseApiService apiService = Server.getUrl().create(BaseApiService.class);
         Call<ResponsModel> getdata = apiService.getRestorant(location, radius, type, key);
         getdata.enqueue(new Callback<ResponsModel>() {
@@ -229,8 +227,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         for (int i = 0; i < response.body().getResults().size(); i++) {
                             double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
                             double lng = response.body().getResults().get(i).getGeometry().getLocation().getLng();
-                            String placeName = response.body().getResults().get(i).getName();
-                            String vicinity = response.body().getResults().get(i).getVicinity();
+                            final String placeName = response.body().getResults().get(i).getName();
+                            final String vicinity = response.body().getResults().get(i).getVicinity();
                             MarkerOptions markerOptions = new MarkerOptions();
                             LatLng latLng = new LatLng(lat, lng);
                             // Position of Marker on Map
