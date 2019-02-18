@@ -29,7 +29,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        getSupportActionBar().setTitle("Google Map Place Picker Sample");
+        getSupportActionBar().setTitle("Google Map Sample");
 
         btnPickPlace = findViewById(R.id.btnPlacePicker);
         tvPlaceDetails = findViewById(R.id.placeDetails);
