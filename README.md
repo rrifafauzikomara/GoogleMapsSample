@@ -25,6 +25,14 @@ In this branch, add API Google Maps for Place Autocomplete
 
 In this branch, add API Google Maps Place Search restaurant in Bandung with radius 1500 meters 
 
+## Branch add_api_place_picker
+### Screenshot 4
+<pre>
+<img src="Screenshot/Screenshot_6.jpg" width="250" height="500">  <img src="Screenshot/Screenshot_7.jpg" width="250" height="500">  <img src="Screenshot/Screenshot_8.jpg" width="250" height="500">  <img src="Screenshot/Screenshot_9.jpg" width="250" height="500">
+</pre>
+
+In this branch, add API Google Maps for Place Picker
+
 ## Author
 
 * **R Rifa Fauzi Komara**
