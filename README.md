@@ -1,6 +1,9 @@
 # Google Maps V2 Sample
 Sample app who implement all API Google Maps V2
 
+### Config
+To run this example, you should add your API KEY first for MAPS into ***google_maps_api.xml*** file.
+
 ## Branch master
 ### Screenshot 1
 <pre>
